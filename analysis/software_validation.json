@@ -1,0 +1,54 @@
+{
+  "dependency_versions": {
+    "pandas": "2.2.3",
+    "numpy": "2.2.3",
+    "scipy": "1.15.2",
+    "scikit-learn": "1.6.1",
+    "xgboost": "2.1.4",
+    "matplotlib": "3.10.1",
+    "pyserial": "3.5"
+  },
+  "pip_check": {
+    "exit_code": 0,
+    "output": "No broken requirements found."
+  },
+  "unit_tests": {
+    "exit_code": 0,
+    "output": "test_dew_point_and_surface_margin (test_logging.HybridSchemaChecks.test_dew_point_and_surface_margin) ... ok\ntest_invalid_extended_sensor_fields (test_logging.HybridSchemaChecks.test_invalid_extended_sensor_fields) ... ok\ntest_missing_and_zero_humidity (test_logging.HybridSchemaChecks.test_missing_and_zero_humidity) ... ok\ntest_complete_run (test_logging.LogChecks.test_complete_run) ... ok\ntest_duplicate (test_logging.LogChecks.test_duplicate) ... ok\ntest_failed_sensor (test_logging.LogChecks.test_failed_sensor) ... ok\ntest_invalid_packet (test_logging.LogChecks.test_invalid_packet) ... ok\ntest_missing_sample (test_logging.LogChecks.test_missing_sample) ... ok\ntest_reset (test_logging.LogChecks.test_reset) ... ok\ntest_short_run (test_logging.LogChecks.test_short_run) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.253s\n\nOK\n"
+  },
+  "pseudo_terminal_integration": {
+    "result": "pass",
+    "records_written": 3,
+    "invalid_records_rejected": 1,
+    "derived_dew_point_verified": true,
+    "extended_node_and_power_fields_verified": true,
+    "physical_hardware": false
+  },
+  "plot_input": {
+    "machines": 5,
+    "rows": 25787,
+    "window_s": [
+      0,
+      86400
+    ],
+    "duplicates": 0,
+    "valid_cpu_range_pct": [
+      0,
+      100
+    ]
+  },
+  "physical_one_hour_test": {
+    "result": "not_run"
+  },
+  "firmware_build": {
+    "result": "pass",
+    "board": "esp32dev",
+    "platform": "espressif32@6.10.0",
+    "OneWire": "2.3.8",
+    "DallasTemperature": "4.0.4",
+    "ram_bytes": 21536,
+    "flash_bytes": 274933,
+    "physical_hardware": false,
+    "warnings": "Two upstream OneWire #undef formatting warnings; build completed successfully."
+  }
+}
