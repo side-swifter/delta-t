@@ -1,0 +1,23 @@
+{
+  "rows": 3601,
+  "duration_s": 3599.992,
+  "duplicate_samples": 0,
+  "missing_samples": 0,
+  "irregular_device_intervals": 0,
+  "arrival_gaps_over_1_5s": 0,
+  "out_of_order_samples": 0,
+  "device_restarts_or_changes": 0,
+  "sensor_failures": 0,
+  "sessions": 1,
+  "pass": true,
+  "mode": "physical_serial",
+  "port": "/dev/ttyACM0",
+  "logger_exit_code": 0,
+  "capture_summary": {
+    "rows": 3601,
+    "rejected_records": 0,
+    "mode": "serial",
+    "elapsed_s": 3600.906
+  },
+  "requested_duration_s": 3600
+}
