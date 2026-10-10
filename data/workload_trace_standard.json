@@ -1,0 +1,16 @@
+{
+  "source_recording": "server2_cpu_1s.csv",
+  "window_start_unix_ts": 1791596694.216,
+  "window_start_offset_s": 710,
+  "duration_s": 2700,
+  "sample_interval_s": 1,
+  "cpu_mean_pct": 22.89,
+  "cpu_std_pct": 33.12,
+  "cpu_max_pct": 100.0,
+  "max_rise_within_5s_pp": 100.0,
+  "heater_mapping": "heater_w = idle_w + (max_w - idle_w) * cpu_util_pct / 100",
+  "idle_w": 5.0,
+  "max_w": 25.0,
+  "power_source": "PLACEHOLDER per chip, awaiting P confirmation",
+  "rapl_fit": null
+}
