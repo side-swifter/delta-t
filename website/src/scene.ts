@@ -42,18 +42,29 @@ const smooth = (a: number, b: number, x: number) => {
 
 export function createRig(canvas: HTMLCanvasElement, labelRoot: HTMLElement): RigScene | null {
   let renderer: THREE.WebGLRenderer
+  const coarse = window.matchMedia('(pointer: coarse)').matches
+  const dpr = window.devicePixelRatio || 1
   try {
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' })
+    // Dense phone screens don't need MSAA; it's a big share of the GPU cost there.
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: !(coarse && dpr >= 2), alpha: true, powerPreference: 'high-performance' })
   } catch {
     return null
   }
-  // Phones: cap the pixel ratio so the GPU keeps up while the page scrolls.
-  const coarse = window.matchMedia('(pointer: coarse)').matches
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, coarse ? 1.5 : 2))
+
+  // Quality tiers. 2 = full, 1 = lighter pixels and shadows, 0 = low power (no shadows, 30 fps).
+  // Start from what the device says about itself, then step down if frames come in slow.
+  const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } }
+  const weak = (nav.deviceMemory ?? 8) <= 4 || (navigator.hardwareConcurrency || 8) <= 4
+  let tier = nav.connection?.saveData ? 0 : coarse || weak ? 1 : 2
+  const pixelRatio = () => [Math.min(dpr, 1), Math.min(dpr, 1.5), Math.min(dpr, 2)][tier]
+  renderer.setPixelRatio(pixelRatio())
   renderer.toneMapping = THREE.NeutralToneMapping
   renderer.toneMappingExposure = 1.05
   renderer.shadowMap.enabled = true
   renderer.shadowMap.type = THREE.PCFShadowMap
+  // The light never moves, so the shadow map only needs an occasional refresh for the spinning fans.
+  renderer.shadowMap.autoUpdate = false
+  renderer.shadowMap.needsUpdate = true
 
   const scene = new THREE.Scene()
   const pmrem = new THREE.PMREMGenerator(renderer)
@@ -411,6 +422,7 @@ export function createRig(canvas: HTMLCanvasElement, labelRoot: HTMLElement): Ri
   let active = true
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 }
   window.addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'mouse') return // a finger scrolling the page shouldn't swing the camera
     pointer.tx = (e.clientX / window.innerWidth - 0.5) * 2
     pointer.ty = (e.clientY / window.innerHeight - 0.5) * 2
   }, { passive: true })
@@ -443,9 +455,34 @@ export function createRig(canvas: HTMLCanvasElement, labelRoot: HTMLElement): Ri
     camPos.sub(camTarget).multiplyScalar(far).add(camTarget)
   }
 
-  function frame() {
+  function applyTier() {
+    renderer.setPixelRatio(pixelRatio())
+    renderer.setSize(width, height, false)
+    key.castShadow = tier > 0
+    renderer.shadowMap.needsUpdate = true
+    airGeo.setDrawRange(0, tier > 0 ? AIR : Math.floor(AIR / 2))
+  }
+  if (tier < 2) applyTier()
+
+  // Frame-time watch: average over ~1.5 s of rendering; if it can't hold ~45 fps, drop a tier.
+  let slowSum = 0, slowN = 0, frameNo = 0, lastRender = 0
+  function watch(ms: number) {
+    if (tier === 0) return
+    slowSum += Math.min(ms, 100)
+    slowN++
+    if (slowN < 90) return
+    if (slowSum / slowN > 22) { tier--; applyTier() }
+    slowSum = 0
+    slowN = 0
+  }
+
+  function frame(now: number) {
     if (!active) return
-    clock.update()
+    requestAnimationFrame(frame)
+    if (tier === 0 && now - lastRender < 31) return
+    if (lastRender) watch(now - lastRender)
+    lastRender = now
+    clock.update(now)
     const dt = Math.min(0.05, clock.getDelta())
     elapsed += dt
     const motion = reduce ? 0 : 1
@@ -495,6 +532,7 @@ export function createRig(canvas: HTMLCanvasElement, labelRoot: HTMLElement): Ri
     }
     drops.instanceMatrix.needsUpdate = true
 
+    if (++frameNo % 20 === 0 && key.castShadow) renderer.shadowMap.needsUpdate = true
     renderer.render(scene, camera)
 
     // Labels follow their parts on screen.
@@ -511,7 +549,6 @@ export function createRig(canvas: HTMLCanvasElement, labelRoot: HTMLElement): Ri
       l.el.classList.toggle('is-left', !fitsRight && fitsLeft)
       l.el.style.opacity = (fitsRight || fitsLeft ? vis : 0).toFixed(3)
     }
-    requestAnimationFrame(frame)
   }
   requestAnimationFrame(frame)
 
@@ -521,7 +558,7 @@ export function createRig(canvas: HTMLCanvasElement, labelRoot: HTMLElement): Ri
     setActive(on) {
       if (on === active) return
       active = on
-      if (on) { clock.reset(); requestAnimationFrame(frame) }
+      if (on) { clock.reset(); lastRender = 0; slowSum = 0; slowN = 0; requestAnimationFrame(frame) }
     },
   }
 }

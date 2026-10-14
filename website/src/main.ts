@@ -92,7 +92,11 @@ ScrollTrigger.create({
   },
 })
 
-new IntersectionObserver(([entry]) => rig?.setActive(entry.isIntersecting)).observe(story)
+let storyOn = true
+new IntersectionObserver(([entry]) => {
+  storyOn = entry.isIntersecting
+  rig?.setActive(storyOn)
+}).observe(story)
 
 const r = (k: string) => $(`[data-r="${k}"]`)
 const sim = new RigSim(trace.cpu)
@@ -120,6 +124,11 @@ function paint(st: RigState) {
 }
 
 function tick(now: number) {
+  requestAnimationFrame(tick)
+  if (!storyOn) {
+    last = now
+    return
+  }
   const dt = Math.min(0.1, (now - last) / 1000) * SPEED
   last = now
   simT += dt
@@ -129,7 +138,6 @@ function tick(now: number) {
     paint(s)
     lastPaint = now
   }
-  requestAnimationFrame(tick)
 }
 paint(s)
 rig?.setState({ fan: s.fan, liquid: s.liquid, load: s.cpu / 100 })
