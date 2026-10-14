@@ -240,8 +240,7 @@ h3 { font-size: 17px; font-weight: 600; line-height: 1.3; font-variation-setting
   content: attr(data-initials); position: absolute; inset: 0; display: grid; place-items: center;
   font-size: clamp(48px, 6vw, 88px); font-weight: 500; font-variation-settings: 'wdth' 116; letter-spacing: -0.02em; color: #bcbab2;
 }
-.person__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.04); transition: filter 0.5s var(--ease); }
-.person:hover .person__photo img { filter: none; }
+.person__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .person__name { margin-top: 20px; font-size: clamp(22px, 1.9vw, 28px); line-height: 1.1; font-weight: 500; font-variation-settings: 'wdth' 116; letter-spacing: -0.02em; }
 .person__role { margin-top: 6px; font-size: 15px; color: var(--blue); }
 .person__bio { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 15.5px; color: var(--ink-2); }

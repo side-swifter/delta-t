@@ -38,7 +38,7 @@ The hero panel is a simulated preview labeled as such. Replace it with logged ri
 
 ## Team photos
 
-The team page (`team.html`) loads portraits from `public/team/`: `akshayraj.jpg` and `praneeth.jpg` (Shantanu shows initials for now). Keep them small: about 800×1000 JPG. A missing photo falls back to the person's initials. Use roughly 4:5 portrait crops; they display in black and white and turn to color on hover.
+The team page (`team.html`) loads portraits from `public/team/`: `akshayraj.jpg` and `praneeth.jpg` (Shantanu shows initials for now). Keep them small: about 800×1000 JPG. A missing photo falls back to the person's initials. Use roughly 4:5 portrait crops; they display in full color.
 
 ## Deploying to Cloudflare
 
