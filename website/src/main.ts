@@ -30,7 +30,15 @@ const panelCount = $('[data-panel-count]')
 const panelItems = $$('.step__copy', $('.steps')).map((copy, i) => {
   const item = document.createElement('div')
   item.className = 'panel__item'
-  item.append(copy.cloneNode(true))
+  const clone = copy.cloneNode(true) as HTMLElement
+  // The real headings stay in the steps; the copies are presentation, so search engines see one h1.
+  clone.querySelectorAll('h1, h2').forEach((h) => {
+    const d = document.createElement('p')
+    d.className = h.className
+    d.innerHTML = h.innerHTML
+    h.replaceWith(d)
+  })
+  item.append(clone)
   if (i === 0) item.classList.add('is-on')
   panel.append(item)
   return item

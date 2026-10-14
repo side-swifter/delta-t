@@ -1,8 +1,13 @@
 # Cloudflare Worker serving the website (website/dist) as static assets.
 # Use this when the Cloudflare build's root directory is the repo root.
 # Build command: npm run build   Deploy command: npx wrangler deploy
+# website/worker.js redirects http to https and adds security headers.
 name = "delta-t-website"
 compatibility_date = "2026-01-01"
+main = "website/worker.js"
 
 [assets]
 directory = "./website/dist"
+binding = "ASSETS"
+run_worker_first = true
+not_found_handling = "404-page"

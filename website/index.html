@@ -3,10 +3,110 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Delta-T · Hybrid cooling that knows the dew point</title>
-    <meta name="description" content="Delta-T is a test rack cooled by fans and a liquid loop, plus a controller that picks the split using the least power while keeping chips under 70 °C and coolant above the dew point." />
+    <title>Delta-T · Hybrid air and liquid cooling that knows the dew point</title>
+    <meta name="description" content="Delta-T is a test server rack cooled by fans and a liquid loop. Its controller picks the split that uses the least power, keeping chips under 70 °C and coolant above the dew point." />
+    <link rel="canonical" href="https://thechangeintemperature.tech/" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#EEEDE9" />
+    <meta name="author" content="Delta-T" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Delta-T" />
+    <meta property="og:title" content="Delta-T · Hybrid air and liquid cooling that knows the dew point" />
+    <meta property="og:description" content="Delta-T is a test server rack cooled by fans and a liquid loop. Its controller picks the split that uses the least power, keeping chips under 70 °C and coolant above the dew point." />
+    <meta property="og:url" content="https://thechangeintemperature.tech/" />
+    <meta property="og:image" content="https://thechangeintemperature.tech/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The Delta-T test rack: four server nodes cooled by a fan wall and a liquid loop." />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Delta-T · Hybrid air and liquid cooling that knows the dew point" />
+    <meta name="twitter:description" content="Delta-T is a test server rack cooled by fans and a liquid loop. Its controller picks the split that uses the least power, keeping chips under 70 °C and coolant above the dew point." />
+    <meta name="twitter:image" content="https://thechangeintemperature.tech/og.jpg" />
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://thechangeintemperature.tech/#org",
+      "name": "Delta-T",
+      "url": "https://thechangeintemperature.tech/",
+      "logo": "https://thechangeintemperature.tech/icon-512.png",
+      "description": "A high school research team building a hybrid air and liquid cooled server rack with a dew-point-aware controller."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://thechangeintemperature.tech/#site",
+      "url": "https://thechangeintemperature.tech/",
+      "name": "Delta-T",
+      "publisher": {
+        "@id": "https://thechangeintemperature.tech/#org"
+      },
+      "inLanguage": "en"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Isn't this just a thermostat?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A thermostat holds one temperature. Delta-T chooses between two cooling systems with different costs, under two limits that move: chip temperature and the dew point."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much energy does it save?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We don't know yet, and we won't guess. It gets measured on the rig, for the same workload at equal safety, against a properly tuned standard controller."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why not reinforcement learning?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It would be harder to trust. A fitted physical model and a small search over fan and pump settings is fast, explainable and easy to check against the limits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if the controller fails?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Thermal fuses and a leak sensor on a hardware relay cut power without asking the software. The controller is never the last line of defense."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who is it for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Operators of older air-cooled data centers adding liquid cooling for AI hardware, who have to run both systems in the same room."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where does the load come from?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A 45-minute recording from our own server, replayed through the heaters watt for watt, so every test run does the same work."
+          }
+        }
+      ]
+    }
+  ]
+}
+    </script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>

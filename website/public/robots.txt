@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://thechangeintemperature.tech/sitemap.xml
