@@ -50,13 +50,13 @@
         <div class="frame">
           <ul class="people__list">
             <li class="person">
-              <figure class="person__photo" data-initials="AS"><img src="team/akshayraj.jpg" alt="Akshayraj Sanjai" loading="lazy" onerror="this.remove()" /></figure>
+              <figure class="person__photo" data-initials="AS"><img src="team/akshayraj.jpg" alt="Akshayraj Sanjai" loading="lazy" onerror="if (!this.dataset.retry) { this.dataset.retry = 1; this.src = this.src.replace('.jpg', '.png') } else this.remove()" /></figure>
               <h2 class="person__name">Akshayraj Sanjai</h2>
               <p class="person__role">Founder · Hardware and build</p>
               <p class="person__bio">Designs and machines the rig: the heater blocks, the liquid loop and the Peltier stage.</p>
             </li>
             <li class="person">
-              <figure class="person__photo" data-initials="EP"><img src="team/praneeth.jpg" alt="Eswar Praneeth Pendeyala" loading="lazy" onerror="this.remove()" /></figure>
+              <figure class="person__photo" data-initials="EP"><img src="team/praneeth.jpg" alt="Eswar Praneeth Pendeyala" loading="lazy" onerror="if (!this.dataset.retry) { this.dataset.retry = 1; this.src = this.src.replace('.jpg', '.png') } else this.remove()" /></figure>
               <h2 class="person__name">Eswar Praneeth Pendeyala</h2>
               <p class="person__role">Physics and simulation</p>
               <p class="person__bio">Owns the thermal model and the simulation plan, from the rig simulator to the four-rack CFD study.</p>
