@@ -1,0 +1,7 @@
+# Cloudflare Worker serving the built site (dist/) as static assets.
+# Use this when the Cloudflare build's root directory is "website".
+name = "delta-t-website"
+compatibility_date = "2026-01-01"
+
+[assets]
+directory = "./dist"

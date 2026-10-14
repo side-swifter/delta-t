@@ -1,0 +1,8 @@
+# Cloudflare Worker serving the website (website/dist) as static assets.
+# Use this when the Cloudflare build's root directory is the repo root.
+# Build command: npm run build   Deploy command: npx wrangler deploy
+name = "delta-t-website"
+compatibility_date = "2026-01-01"
+
+[assets]
+directory = "./website/dist"

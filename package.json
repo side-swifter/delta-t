@@ -1,0 +1,8 @@
+{
+  "name": "delta-t",
+  "private": true,
+  "description": "Builds the website from the repo root, for Cloudflare.",
+  "scripts": {
+    "build": "npm --prefix website ci && npm --prefix website run build"
+  }
+}

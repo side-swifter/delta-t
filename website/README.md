@@ -38,4 +38,13 @@ The hero panel is a simulated preview labeled as such. Replace it with logged ri
 
 ## Team photos
 
-The team page (`team.html`) loads portraits from `public/team/`: `akshayraj.png`, `praneeth.png` and `shantanu.png` (not wired yet, it shows initials). A missing photo falls back to the person's initials. Use roughly 4:5 portrait crops; they display in black and white and turn to color on hover.
+The team page (`team.html`) loads portraits from `public/team/`: `akshayraj.jpg` and `praneeth.jpg` (Shantanu shows initials for now). Keep them small: about 800×1000 JPG. A missing photo falls back to the person's initials. Use roughly 4:5 portrait crops; they display in black and white and turn to color on hover.
+
+## Deploying to Cloudflare
+
+The site is a Cloudflare Worker named `delta-t-website` that serves `dist/` as static assets. In the Cloudflare build settings use either:
+
+- Root directory `website`: build `npm run build`, deploy `npx wrangler deploy` (uses `website/wrangler.toml`)
+- Root directory `/`: build `npm run build`, deploy `npx wrangler deploy` (uses the repo-root `wrangler.toml` and `package.json`)
+
+Add the custom domain (changeintemperature.tech) under the Worker's Settings → Domains & Routes.
