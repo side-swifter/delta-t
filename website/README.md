@@ -47,4 +47,4 @@ The site is a Cloudflare Worker named `delta-t-website` that serves `dist/` as s
 - Root directory `website`: build `npm run build`, deploy `npx wrangler deploy` (uses `website/wrangler.toml`)
 - Root directory `/`: build `npm run build`, deploy `npx wrangler deploy` (uses the repo-root `wrangler.toml` and `package.json`)
 
-Add the custom domain (changeintemperature.tech) under the Worker's Settings → Domains & Routes.
+Add the custom domains (thechangeintemperature.tech and www.thechangeintemperature.tech) under the Worker's Settings → Domains & Routes.
