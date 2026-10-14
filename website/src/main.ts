@@ -13,6 +13,10 @@ import { createRig } from './scene'
 
 gsap.registerPlugin(ScrollTrigger)
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const touch = window.matchMedia('(pointer: coarse)').matches
+const phone = window.matchMedia('(max-width: 900px)')
+// Phone browsers resize the viewport as the address bar shows and hides; don't re-layout the story for that.
+ScrollTrigger.config({ ignoreMobileResize: true })
 
 const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel)!
 const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => [...root.querySelectorAll<T>(sel)]
@@ -20,9 +24,30 @@ const fmt = (v: number, d = 1) => v.toFixed(d)
 
 const { closeMenu } = setupChrome()
 
+// ---------- Phone panel: the story copy sits under the rig, one chapter at a time ----------
+const panel = $('[data-panel]')
+const panelCount = $('[data-panel-count]')
+const panelItems = $$('.step__copy', $('.steps')).map((copy, i) => {
+  const item = document.createElement('div')
+  item.className = 'panel__item'
+  item.append(copy.cloneNode(true))
+  if (i === 0) item.classList.add('is-on')
+  panel.append(item)
+  return item
+})
+let panelOn = 0
+function setPanel(i: number) {
+  if (i === panelOn) return
+  panelItems[panelOn].classList.remove('is-on')
+  panelItems[i].classList.add('is-on')
+  panelOn = i
+  panelCount.textContent = i === 0 ? 'Scroll' : `${i} / ${panelItems.length - 1}`
+}
+
 // ---------- Smooth scroll ----------
 let lenis: Lenis | null = null
-if (!reduceMotion) {
+// Native scrolling on touch screens: it's already smooth there, and Lenis fights the finger.
+if (!reduceMotion && !touch) {
   lenis = new Lenis({ lerp: 0.12 })
   lenis.on('scroll', ScrollTrigger.update)
   gsap.ticker.add((time) => lenis!.raf(time * 1000))
@@ -36,7 +61,7 @@ $$<HTMLAnchorElement>('a[href^="#"]').forEach((a) =>
     e.preventDefault()
     closeMenu()
     if (lenis) lenis.scrollTo(target, { offset: id === '#top' ? 0 : -56 })
-    else target.scrollIntoView()
+    else target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' })
   }),
 )
 
@@ -63,6 +88,7 @@ ScrollTrigger.create({
     const active = Math.round(chapter)
     chNum.textContent = String(active).padStart(2, '0')
     chName.textContent = CHAPTERS[active]
+    setPanel(active)
   },
 })
 
@@ -178,9 +204,9 @@ updateDew()
 
 // ---------- Motion: one entrance for the hero, then the story copy fades as it passes ----------
 if (!reduceMotion) {
-  gsap.from('.step--hero .step__copy > *', { y: 18, opacity: 0, duration: 1, ease: 'power3.out', stagger: 0.07, delay: 0.1 })
+  gsap.from(phone.matches ? '.panel__item.is-on .step__copy > *' : '.step--hero .step__copy > *', { y: 18, opacity: 0, duration: 1, ease: 'power3.out', stagger: 0.07, delay: 0.1 })
   gsap.from('.readout', { opacity: 0, duration: 1, delay: 0.5 })
-  $$('.step:not(.step--hero) .step__copy').forEach((el) => {
+  if (!phone.matches) $$('.step:not(.step--hero) .step__copy').forEach((el) => {
     gsap.fromTo(el, { opacity: 0.15 }, {
       opacity: 1,
       ease: 'none',

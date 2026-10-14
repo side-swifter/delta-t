@@ -47,7 +47,9 @@ export function createRig(canvas: HTMLCanvasElement, labelRoot: HTMLElement): Ri
   } catch {
     return null
   }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  // Phones: cap the pixel ratio so the GPU keeps up while the page scrolls.
+  const coarse = window.matchMedia('(pointer: coarse)').matches
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, coarse ? 1.5 : 2))
   renderer.toneMapping = THREE.NeutralToneMapping
   renderer.toneMappingExposure = 1.05
   renderer.shadowMap.enabled = true
