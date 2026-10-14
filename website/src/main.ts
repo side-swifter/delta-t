@@ -6,7 +6,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 
-import { logoMark } from './logo'
+import { setupChrome } from './chrome'
 import trace from './data/trace.json'
 import { RigSim, coolantFloor, dewPoint, liquidShare, clamp, type RigState } from './physics'
 import { createRig } from './scene'
@@ -18,8 +18,7 @@ const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = docu
 const $$ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => [...root.querySelectorAll<T>(sel)]
 const fmt = (v: number, d = 1) => v.toFixed(d)
 
-// ---------- Logo ----------
-$$('[data-logo]').forEach((el) => (el.innerHTML = logoMark()))
+const { closeMenu } = setupChrome()
 
 // ---------- Smooth scroll ----------
 let lenis: Lenis | null = null
@@ -41,22 +40,6 @@ $$<HTMLAnchorElement>('a[href^="#"]').forEach((a) =>
   }),
 )
 
-// ---------- Nav ----------
-const nav = $('[data-nav]')
-const toggle = $<HTMLButtonElement>('[data-menu-toggle]')
-const menu = $('[data-menu]')
-function closeMenu() {
-  toggle.setAttribute('aria-expanded', 'false')
-  menu.hidden = true
-}
-toggle.addEventListener('click', () => {
-  const open = toggle.getAttribute('aria-expanded') !== 'true'
-  toggle.setAttribute('aria-expanded', String(open))
-  menu.hidden = !open
-})
-const onScroll = () => nav.classList.toggle('is-solid', window.scrollY > 8)
-window.addEventListener('scroll', onScroll, { passive: true })
-onScroll()
 
 // ---------- The rig: 3D model + readouts, both driven by the recorded server trace ----------
 const story = $('[data-story]')

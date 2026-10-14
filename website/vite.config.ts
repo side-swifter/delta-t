@@ -1,7 +1,13 @@
+import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   base: './',
-  // three.js is most of the bundle; one chunk is fine for a single page.
-  build: { chunkSizeWarningLimit: 900 },
+  build: {
+    // three.js is most of the home page bundle; one chunk is fine.
+    chunkSizeWarningLimit: 900,
+    rollupOptions: {
+      input: { main: resolve(__dirname, 'index.html'), team: resolve(__dirname, 'team.html') },
+    },
+  },
 })

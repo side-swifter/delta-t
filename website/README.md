@@ -35,3 +35,7 @@ Vite 8, TypeScript, GSAP with ScrollTrigger, Lenis smooth scrolling, Three.js fo
 - Hosting. The repo is private, so GitHub Pages needs a paid plan. Vercel or Netlify deploy free from a private repo: set the root directory to `website`, build command `npm run build`, output `dist`.
 
 The hero panel is a simulated preview labeled as such. Replace it with logged rig data once the head-to-head runs are done.
+
+## Team photos
+
+The team page (`team.html`) loads portraits from `public/team/`: `akshayraj.png`, `praneeth.png` and `shantanu.png` (not wired yet, it shows initials). A missing photo falls back to the person's initials. Use roughly 4:5 portrait crops; they display in black and white and turn to color on hover.

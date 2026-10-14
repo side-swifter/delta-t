@@ -63,7 +63,8 @@ export function createRig(canvas: HTMLCanvasElement, labelRoot: HTMLElement): Ri
   const key = new THREE.DirectionalLight(0xffffff, 1.6)
   key.position.set(1.8, 3.2, 1.6)
   key.castShadow = true
-  key.shadow.mapSize.set(2048, 2048)
+  const small = Math.min(window.innerWidth, window.innerHeight) < 700
+  key.shadow.mapSize.set(small ? 1024 : 2048, small ? 1024 : 2048)
   key.shadow.camera.left = -1.4
   key.shadow.camera.right = 1.4
   key.shadow.camera.top = 1.4
@@ -331,7 +332,7 @@ export function createRig(canvas: HTMLCanvasElement, labelRoot: HTMLElement): Ri
   root.add(drops)
 
   // ---------- Air: particles warm as they cross the heaters ----------
-  const AIR = 520
+  const AIR = small ? 260 : 520
   const airPos = new Float32Array(AIR * 3)
   const airCol = new Float32Array(AIR * 3)
   const airSeed = new Float32Array(AIR)
@@ -501,9 +502,12 @@ export function createRig(canvas: HTMLCanvasElement, labelRoot: HTMLElement): Ri
       const x = (tmp.x * 0.5 + 0.5) * width
       const y = (-tmp.y * 0.5 + 0.5) * height
       l.el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`
-      l.el.style.opacity = vis.toFixed(3)
       if (vis > 0 && !l.w) l.w = (l.el.lastElementChild as HTMLElement).offsetWidth
-      l.el.classList.toggle('is-left', x + l.w + 48 > width)
+      // Put the label on whichever side has room; hide it if neither does (small phones).
+      const fitsRight = x + l.w + 48 <= width
+      const fitsLeft = x - l.w - 48 >= 0
+      l.el.classList.toggle('is-left', !fitsRight && fitsLeft)
+      l.el.style.opacity = (fitsRight || fitsLeft ? vis : 0).toFixed(3)
     }
     requestAnimationFrame(frame)
   }

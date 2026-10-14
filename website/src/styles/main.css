@@ -227,6 +227,27 @@ h3 { font-size: 17px; font-weight: 600; line-height: 1.3; font-variation-setting
 .qa h3 { font-size: 19px; font-weight: 500; font-variation-settings: 'wdth' 108; color: var(--paper); }
 .qa p { margin-top: 8px; color: #bdbcb5; font-size: 15.5px; max-width: 520px; }
 
+/* ---------- Team page ---------- */
+.team-page { background: var(--paper); }
+.team-hero { padding-top: calc(var(--nav-h) + clamp(48px, 7vw, 104px)); }
+.team-hero .block__top { border-top-color: var(--ink); }
+.statement--ink { color: var(--ink); max-width: 22ch; }
+.team-hero__lede { margin-top: 24px; max-width: 560px; font-size: 18px; color: var(--ink-2); }
+.people { padding-block: clamp(56px, 7vw, 96px) clamp(80px, 10vw, 140px); }
+.people__list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px 24px; }
+.person__photo { position: relative; margin: 0; aspect-ratio: 4 / 5; background: #dddbd4; overflow: hidden; }
+.person__photo::before {
+  content: attr(data-initials); position: absolute; inset: 0; display: grid; place-items: center;
+  font-size: clamp(48px, 6vw, 88px); font-weight: 500; font-variation-settings: 'wdth' 116; letter-spacing: -0.02em; color: #bcbab2;
+}
+.person__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.04); transition: filter 0.5s var(--ease); }
+.person:hover .person__photo img { filter: none; }
+.person__name { margin-top: 20px; font-size: clamp(22px, 1.9vw, 28px); line-height: 1.1; font-weight: 500; font-variation-settings: 'wdth' 116; letter-spacing: -0.02em; }
+.person__role { margin-top: 6px; font-size: 15px; color: var(--blue); }
+.person__bio { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 15.5px; color: var(--ink-2); }
+.nav__links a[aria-current='page'] { color: var(--ink); text-decoration: underline; text-underline-offset: 6px; }
+body.menu-open { overflow: hidden; }
+
 /* ---------- Footer ---------- */
 .foot { background: var(--ink); color: var(--paper); padding-top: 16px; border-top: 1px solid var(--line-dk); }
 .foot > .frame { padding-top: clamp(56px, 7vw, 96px); }
@@ -250,6 +271,7 @@ h3 { font-size: 17px; font-weight: 600; line-height: 1.3; font-variation-setting
 }
 
 @media (max-width: 900px) {
+  .nav { background: var(--paper); backdrop-filter: none; -webkit-backdrop-filter: none; }
   .nav__inner { grid-template-columns: 1fr auto; }
   .nav__links, .nav__cta { display: none; }
   .nav__toggle { display: block; }
@@ -265,10 +287,11 @@ h3 { font-size: 17px; font-weight: 600; line-height: 1.3; font-variation-setting
 
   .step { align-items: flex-end; padding: 0 0 16px; }
   .step__copy, .step--hero .step__copy {
-    max-width: none; background: var(--paper); border: 1px solid var(--ink); padding: 20px;
+    max-width: none; background: rgb(238 237 233 / 0.96); border: 0; border-top: 1px solid var(--ink); padding: 18px 0 8px;
+    box-shadow: 0 0 0 100vmax rgb(238 237 233 / 0.96); clip-path: inset(0 -100vmax);
  }
   .step--hero { min-height: 0; padding-top: calc(var(--nav-h) + 62px + 50svh); padding-bottom: 0; }
-  .step--hero .step__copy { border: 0; border-top: 1px solid var(--ink); padding: 20px 0 48px; background: var(--paper); box-shadow: 0 0 0 100vmax var(--paper); clip-path: inset(0 -100vmax -100vmax); }
+  .step--hero .step__copy { border: 0; border-top: 1px solid var(--ink); padding: 20px 0 48px; background: var(--paper); box-shadow: 0 0 0 100vmax var(--paper); clip-path: inset(0 -100vmax); }
   .step--hero .meta { display: none; }
   .step__copy > * + * { margin-top: 12px; }
   .step__copy p { font-size: 15px; }
@@ -291,6 +314,11 @@ h3 { font-size: 17px; font-weight: 600; line-height: 1.3; font-variation-setting
   .cols--2 .col p:not(.label) { grid-template-columns: 60px 1fr; }
   .track__tick:nth-of-type(2) em { display: none; }
   .qa { grid-template-columns: 1fr; gap: 28px; }
+  .people__list { grid-template-columns: 1fr; gap: 40px; }
+  .person__photo { aspect-ratio: 1 / 1; }
+  .team-hero__lede { font-size: 16.5px; }
+  .foot__col a { padding-block: 5px; }
+  .inline { padding-block: 4px; }
   .foot__grid { grid-template-columns: 1fr 1fr; }
   .foot__mark { grid-column: 1 / -1; height: 52px; margin-bottom: 16px; }
 }

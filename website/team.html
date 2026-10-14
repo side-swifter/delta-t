@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team · Delta-T</title>
+    <meta name="description" content="Delta-T is a test rack cooled by fans and a liquid loop, plus a controller that picks the split using the least power while keeping chips under 70 °C and coolant above the dew point." />
+    <meta name="theme-color" content="#EEEDE9" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="nav" data-nav>
+      <div class="nav__inner">
+        <a class="nav__brand" href="./" aria-label="Delta-T home"><span class="nav__mark" data-logo></span><span class="nav__name">Hybrid cooling research</span></a>
+        <nav class="nav__links" aria-label="Sections">
+          <a href="./#rig">Rig</a>
+          <a href="./#calculator">Try it</a>
+          <a href="./#parts">Parts</a>
+          <a href="./#progress">Progress</a>
+          <a href="./#faq">Questions</a>
+          <a href="team.html" aria-current="page">Team</a>
+        </nav>
+        <a class="nav__cta" href="./#progress">Follow the build <span aria-hidden="true">→</span></a>
+        <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>
+          <span class="nav__toggle-label">Menu</span>
+        </button>
+      </div>
+      <div class="menu" id="menu" hidden data-menu>
+        <a href="./#rig">Rig</a>
+        <a href="./#calculator">Try it</a>
+        <a href="./#parts">Parts</a>
+        <a href="./#progress">Progress</a>
+        <a href="./#faq">Questions</a>
+        <a href="team.html" aria-current="page">Team</a>
+      </div>
+    </header>
+
+    <main id="main" class="team-page">
+      <section class="team-hero" id="top">
+        <div class="frame">
+          <div class="block__top"><p class="label">Team</p><p class="label">Conrad Challenge 2026–27</p></div>
+          <h1 class="statement statement--ink">Three high school students, one rack, and a number we haven't measured yet.</h1>
+          <p class="team-hero__lede">We're a STEM research and entrepreneurship team. Between us we cover the hardware, the physics, the software and the business case for hybrid cooling.</p>
+        </div>
+      </section>
+
+      <section class="people">
+        <div class="frame">
+          <ul class="people__list">
+            <li class="person">
+              <figure class="person__photo" data-initials="AS"><img src="team/akshayraj.png" alt="Akshayraj Sanjai" loading="lazy" onerror="this.remove()" /></figure>
+              <h2 class="person__name">Akshayraj Sanjai</h2>
+              <p class="person__role">Founder · Hardware and build</p>
+              <p class="person__bio">Designs and machines the rig: the heater blocks, the liquid loop and the Peltier stage.</p>
+            </li>
+            <li class="person">
+              <figure class="person__photo" data-initials="EP"><img src="team/praneeth.png" alt="Eswar Praneeth Pendeyala" loading="lazy" onerror="this.remove()" /></figure>
+              <h2 class="person__name">Eswar Praneeth Pendeyala</h2>
+              <p class="person__role">Physics and simulation</p>
+              <p class="person__bio">Owns the thermal model and the simulation plan, from the rig simulator to the four-rack CFD study.</p>
+            </li>
+            <li class="person">
+              <figure class="person__photo" data-initials="SM"></figure>
+              <h2 class="person__name">Shantanu Modak</h2>
+              <p class="person__role">Team member</p>
+              <p class="person__bio">Profile coming soon.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <div class="frame">
+        <p class="foot__big">The difference is the temperature. <span>We're measuring it.</span></p>
+        <div class="foot__grid">
+          <div class="foot__mark" data-logo></div>
+          <nav class="foot__col" aria-label="Site">
+            <p class="label">Site</p>
+            <a href="./#rig">The rig</a>
+            <a href="./#calculator">Try it</a>
+            <a href="./#parts">Parts</a>
+            <a href="./#progress">Progress</a>
+          </nav>
+          <nav class="foot__col" aria-label="Team">
+            <p class="label">Team</p>
+            <a href="team.html">Akshayraj Sanjai</a>
+            <a href="team.html">Eswar Praneeth Pendeyala</a>
+            <a href="team.html">Shantanu Modak</a>
+          </nav>
+          <div class="foot__col">
+            <p class="label">Entry</p>
+            <p>Conrad Challenge 2026–27</p>
+            <p>High school STEM research and entrepreneurship team</p>
+          </div>
+        </div>
+        <div class="foot__base">
+          <span>© 2026 Delta-T</span>
+          <a href="#top">Back to top ↑</a>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/team.ts"></script>
+  </body>
+</html>
