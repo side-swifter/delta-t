@@ -1,5 +1,9 @@
 # Delta-T website plan
 
+## v4 (Oct 14): plain below the rig
+
+Akshay: the 3D rig opening is the goal, but the sections under it felt AI-built because of how they were structured (label column + headline + intro + component grid, repeated). Below the rig the page now turns dark and plain, in the footer's voice: one big statement per block, then footer-style text columns. The calculator is a single sentence with live numbers you edit in place, progress is a timeline from Sep 28 to Jan 10 with a today marker and Done/Next lists, and the FAQ is plain two-column text. Team moved into the footer. Mono uppercase labels are gone; all UI text is Archivo in sentence case. Deploys to Cloudflare as a static-assets Worker (website/wrangler.jsonc) on changeintemperature.tech.
+
 ## v3 (Oct 14): engineering document, not a SaaS page
 
 Akshay's feedback on v2: the type and overall feel still read as AI-made. References: everpuredata.com and Trawelt's case studies on Land-book.

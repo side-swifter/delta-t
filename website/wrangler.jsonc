@@ -1,0 +1,15 @@
+// Cloudflare Worker that serves the built site from dist/ as static assets.
+// Deployed by Cloudflare Workers Builds from the main branch (root directory: website).
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "changeintemperature",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    { "pattern": "changeintemperature.tech", "custom_domain": true },
+    { "pattern": "www.changeintemperature.tech", "custom_domain": true }
+  ]
+}

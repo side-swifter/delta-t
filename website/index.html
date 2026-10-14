@@ -16,24 +16,22 @@
         <a class="nav__brand" href="#top" aria-label="Delta-T home"><span class="nav__mark" data-logo></span><span class="nav__name">Hybrid cooling research</span></a>
         <nav class="nav__links" aria-label="Sections">
           <a href="#rig">Rig</a>
-          <a href="#calculator">Calculator</a>
-          <a href="#specs">Specs</a>
-          <a href="#log">Log</a>
-          <a href="#team">Team</a>
-          <a href="#faq">FAQ</a>
+          <a href="#calculator">Try it</a>
+          <a href="#parts">Parts</a>
+          <a href="#progress">Progress</a>
+          <a href="#faq">Questions</a>
         </nav>
-        <a class="nav__cta" href="#log">Follow the build <span aria-hidden="true">→</span></a>
+        <a class="nav__cta" href="#progress">Follow the build <span aria-hidden="true">→</span></a>
         <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>
           <span class="nav__toggle-label">Menu</span>
         </button>
       </div>
       <div class="menu" id="menu" hidden data-menu>
-        <a href="#rig"><span>01</span>Rig</a>
-        <a href="#calculator"><span>02</span>Calculator</a>
-        <a href="#specs"><span>03</span>Specs</a>
-        <a href="#log"><span>04</span>Log</a>
-        <a href="#team"><span>05</span>Team</a>
-        <a href="#faq"><span>06</span>FAQ</a>
+        <a href="#rig">Rig</a>
+        <a href="#calculator">Try it</a>
+        <a href="#parts">Parts</a>
+        <a href="#progress">Progress</a>
+        <a href="#faq">Questions</a>
       </div>
     </header>
 
@@ -96,7 +94,7 @@
                   and the coolant above the dew point.
                 </p>
                 <div class="ctas">
-                  <a class="btn" href="#calculator">Try the calculator <span aria-hidden="true">→</span></a>
+                  <a class="btn" href="#calculator">Try the dew point math <span aria-hidden="true">→</span></a>
                   <a class="link" href="#rig">How it works</a>
                 </div>
               </div>
@@ -106,7 +104,7 @@
           <article class="step" id="rig">
             <div class="frame">
               <div class="step__copy">
-                <p class="label">01 — Heat</p>
+                <p class="label">Heat</p>
                 <h2 class="title">Four heaters replay a real server.</h2>
                 <p>
                   Cartridge heaters in machined aluminum blocks follow a 45-minute load recording from our own server,
@@ -120,7 +118,7 @@
           <article class="step">
             <div class="frame">
               <div class="step__copy">
-                <p class="label">02 — Air</p>
+                <p class="label">Air</p>
                 <h2 class="title">Fans are cheap to fit and expensive to run.</h2>
                 <p>
                   Fan power rises with roughly the cube of fan speed. Slow the fans by a fifth and they draw about half
@@ -134,7 +132,7 @@
           <article class="step">
             <div class="frame">
               <div class="step__copy">
-                <p class="label">03 — Liquid</p>
+                <p class="label">Liquid</p>
                 <h2 class="title">Colder coolant works better, until water forms on the board.</h2>
                 <p>
                   A Peltier stage chills the coolant below room temperature. Push it below the dew point of the room air
@@ -148,7 +146,7 @@
           <article class="step">
             <div class="frame">
               <div class="step__copy">
-                <p class="label">04 — Control</p>
+                <p class="label">Control</p>
                 <h2 class="title">Every second, it picks the cheapest safe split.</h2>
                 <ol class="layers">
                   <li><span>Log</span>Chip, coolant, air, humidity, flow and power, once a second.</li>
@@ -163,158 +161,102 @@
         </div>
       </section>
 
-      <!-- Calculator -->
-      <section class="sec" id="calculator">
-        <div class="frame sec__grid">
-          <p class="sec__label label">02 / Calculator</p>
-          <div class="sec__body">
-            <h2 class="title title--lg">How cold can the coolant run?</h2>
-            <p class="sec__intro">Set the room. The dew point sets a floor under the coolant, and whatever the liquid can't carry falls to the fans.</p>
-
-            <div class="calc" data-dew>
-              <div class="calc__in">
-                <div class="field">
-                  <div class="field__row"><label for="dew-temp">Room temperature</label><output data-o="t">24 °C</output></div>
-                  <input type="range" id="dew-temp" min="16" max="40" step="0.5" value="24" />
-                </div>
-                <div class="field">
-                  <div class="field__row"><label for="dew-rh">Relative humidity</label><output data-o="rh">55 %</output></div>
-                  <input type="range" id="dew-rh" min="15" max="90" step="1" value="55" />
-                </div>
-                <div class="presets" role="group" aria-label="Example climates">
-                  <button type="button" class="preset" data-preset="38,12">Phoenix, June</button>
-                  <button type="button" class="preset is-on" data-preset="24,55">Typical hall</button>
-                  <button type="button" class="preset" data-preset="30,75">Virginia, July</button>
-                </div>
+      <!-- Below the rig the page turns dark and plain, like the footer -->
+      <div class="after">
+        <section class="block" id="calculator">
+          <div class="frame">
+            <div class="block__top"><p class="label">Try it</p><p class="label">Dew point, Magnus formula</p></div>
+            <div class="sentence" data-dew>
+              <p>
+                In a room at
+                <span class="num-input"><button type="button" data-step="t,-1" aria-label="Colder">−</button><input id="dew-temp" type="number" min="10" max="45" step="0.5" value="24" inputmode="decimal" aria-label="Room temperature in °C" /><span class="unit">°C</span><button type="button" data-step="t,1" aria-label="Warmer">+</button></span>
+                with
+                <span class="num-input"><button type="button" data-step="rh,-5" aria-label="Drier">−</button><input id="dew-rh" type="number" min="5" max="95" step="1" value="55" inputmode="numeric" aria-label="Relative humidity in %" /><span class="unit">%</span><button type="button" data-step="rh,5" aria-label="More humid">+</button></span>
+                humidity, water condenses below <span class="out" data-o="dew">--</span>.
+                So the coolant can't go under <span class="out out--blue" data-o="floor">--</span>,
+                and the liquid loop carries about <span class="out" data-o="liq">--</span> of the heat.
+              </p>
+            </div>
+            <div class="scale" aria-hidden="true">
+              <div class="scale__track">
+                <div class="scale__wet" data-o="unsafe"></div>
+                <span class="scale__mark scale__mark--floor" data-o="mfloor"><em>Coolant floor</em></span>
+                <span class="scale__mark scale__mark--room" data-o="mroom"><em>Room</em></span>
               </div>
+              <div class="scale__ticks"><span>0 °C</span><span>10</span><span>20</span><span>30</span><span>40</span></div>
+            </div>
+            <p class="block__foot">
+              Try <button type="button" class="inline" data-preset="38,12">Phoenix in June</button>,
+              <button type="button" class="inline" data-preset="24,55">a typical hall</button> or
+              <button type="button" class="inline" data-preset="30,75">Virginia in July</button>.
+              The liquid share is an illustrative curve, not a rig measurement.
+            </p>
+          </div>
+        </section>
 
-              <div class="calc__out">
-                <dl class="figs">
-                  <div class="figs__main"><dt class="label">Coldest safe coolant</dt><dd data-o="floor">--</dd></div>
-                  <div><dt class="label">Dew point</dt><dd data-o="dew">--</dd></div>
-                  <div><dt class="label">Heat on the liquid loop</dt><dd data-o="liq">--</dd></div>
-                </dl>
-                <div class="scale" aria-hidden="true">
-                  <div class="scale__track">
-                    <div class="scale__wet" data-o="unsafe"><span>Condensation</span></div>
-                    <span class="scale__mark scale__mark--dew" data-o="mdew"><i></i></span>
-                    <span class="scale__mark scale__mark--floor" data-o="mfloor"><i></i><em>Coolant floor</em></span>
-                    <span class="scale__mark scale__mark--room" data-o="mroom"><i></i><em>Room</em></span>
-                  </div>
-                  <div class="scale__ticks"><span>0 °C</span><span>10</span><span>20</span><span>30</span><span>40</span></div>
-                </div>
-                <p class="calc__note" data-o="note"></p>
+        <section class="block" id="parts">
+          <div class="frame">
+            <div class="block__top"><p class="label">What's in the rack</p><p class="label">About $455 to $500 in parts</p></div>
+            <h2 class="statement">Built like a real retrofit: fans for everything, liquid on half the nodes, and a sealed box so we can set the humidity.</h2>
+            <div class="cols">
+              <div class="col"><p class="label">Heat</p><p>Four CNC aluminum blocks</p><p>Cartridge heaters</p><p>Replay recorded server load</p></div>
+              <div class="col"><p class="label">Air</p><p>PWM fan wall</p><p>Finned sinks on the lower nodes</p><p>Radiator fans on the roof</p></div>
+              <div class="col"><p class="label">Liquid</p><p>PWM DDC pump</p><p>Aluminum cold plates and radiator</p><p>Inhibited coolant</p></div>
+              <div class="col"><p class="label">Chiller</p><p>Two TEC1-12706 Peltier modules</p><p>Pulls coolant below room temperature</p></div>
+              <div class="col"><p class="label">Sensing</p><p>SHT31 for the dew point</p><p>DS18B20 on every node</p><p>INA219 power monitors</p></div>
+              <div class="col"><p class="label">Control</p><p>ESP32-S3 for PWM and sensors</p><p>Raspberry Pi 5 for the model</p><p>Logs everything at 1 Hz</p></div>
+              <div class="col"><p class="label">Safety</p><p>KSD301 thermal fuses</p><p>Leak sensor on a hardware relay</p><p>24-hour dry leak test first</p></div>
+              <div class="col"><p class="label">Limits</p><p>Chips under 70 °C</p><p>Coolant at least 2 °C above the dew point</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="block" id="progress">
+          <div class="frame">
+            <div class="block__top"><p class="label">Progress</p><p class="label">Updated Oct 14, 2026</p></div>
+            <h2 class="statement">Rig build, week <span data-week>3</span> of 8. The energy number comes from the rig, not before.</h2>
+
+            <div class="track" aria-hidden="true">
+              <div class="track__bar"><i data-track-fill></i></div>
+              <span class="track__tick" style="left: 0%"><em>Sep 28<br />Build starts</em></span>
+              <span class="track__tick" style="left: 52.9%"><em>Nov 22<br />Head-to-head runs done</em></span>
+              <span class="track__tick track__tick--end" style="left: 100%"><em>Jan 10<br />Conrad Innovation stage</em></span>
+              <span class="track__now" data-track-now><em>Today</em></span>
+            </div>
+
+            <div class="cols cols--2">
+              <div class="col">
+                <p class="label">Done</p>
+                <p><time>Sep 28</time>Eight-week rig plan starts</p>
+                <p><time>Oct 4</time>246,934,820 rows of Alibaba cluster data scanned for load samples</p>
+                <p><time>Oct 10</time>First hour on hardware: 3,601 rows at 1 Hz, zero gaps</p>
+                <p><time>Oct 10</time>2,700 s of real server load recorded. It drives the rig above</p>
+              </div>
+              <div class="col">
+                <p class="label">Next</p>
+                <p><time>Now</time>Cold plate water test and a 24-hour dry leak test</p>
+                <p><time>Nov 22</time>Our controller against a tuned baseline: humidity sweeps, load spikes, condensation safety</p>
+                <p><time>Jan 10</time>Four-rack CFD model, then a fast surrogate for judges to try live</p>
+                <p class="result"><time>Result</time>Cooling energy saved at equal safety: <b>measuring now</b></p>
               </div>
             </div>
-            <p class="fine">Dew point from the Magnus formula. The liquid share is an illustrative curve, not a rig measurement.</p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- Specs -->
-      <section class="sec" id="specs">
-        <div class="frame sec__grid">
-          <p class="sec__label label">03 / Specs</p>
-          <div class="sec__body">
-            <h2 class="title title--lg">One rack, built like a real retrofit.</h2>
-            <p class="sec__intro">Fans for everything, liquid on some nodes, and a sealed enclosure so we can set the humidity on purpose.</p>
-            <dl class="specs">
-              <div><dt>Heat load</dt><dd>Four CNC aluminum blocks with cartridge heaters<small>Driven by recorded server traces at 1-second resolution</small></dd></div>
-              <div><dt>Air</dt><dd>PWM fans across the front of the rack<small>Lower two nodes use finned heat sinks only</small></dd></div>
-              <div><dt>Liquid</dt><dd>PWM DDC pump, aluminum cold plates on the upper two nodes, aluminum radiator<small>Inhibited coolant, no mixed metals</small></dd></div>
-              <div><dt>Chiller</dt><dd>Two TEC1-12706 Peltier modules ahead of the cold plates<small>Lets the coolant drop below room temperature, so the dew point limit binds</small></dd></div>
-              <div><dt>Sensing</dt><dd>SHT31 humidity, DS18B20 probes on every node and both ends of the loop<small>INA219 power monitors on the heaters and the chiller</small></dd></div>
-              <div><dt>Control</dt><dd>ESP32-S3 for PWM and sensors, Raspberry Pi 5 for the model and optimizer<small>Every signal logged at 1 Hz to an append-only CSV</small></dd></div>
-              <div><dt>Safety</dt><dd>KSD301 thermal fuses and a leak sensor on a relay the software can't override<small>Loop leak-tested for 24 hours unpowered before any heat goes in</small></dd></div>
-              <div><dt>Enclosure</dt><dd>Acrylic, with printed PETG and ASA brackets</dd></div>
-              <div><dt>Limits</dt><dd class="mono">T<sub>chip</sub> &lt; 70 °C &nbsp;&nbsp; T<sub>coolant</sub> &gt; T<sub>dew</sub> + 2 °C</dd></div>
-              <div><dt>Parts</dt><dd>About $455 to $500</dd></div>
-            </dl>
-          </div>
-        </div>
-      </section>
-
-      <!-- Build log -->
-      <section class="sec" id="log">
-        <div class="frame sec__grid">
-          <p class="sec__label label">04 / Log</p>
-          <div class="sec__body">
-            <h2 class="title title--lg">Rig first. Simulation second.</h2>
-
-            <dl class="stats">
-              <div><dt class="label">Rows in first hardware hour</dt><dd>3,601</dd></div>
-              <div><dt class="label">Gaps or dropped samples</dt><dd>0</dd></div>
-              <div><dt class="label">Seconds of real server load</dt><dd>2,700</dd></div>
-              <div><dt class="label">Cluster rows scanned</dt><dd>246.9M</dd></div>
-            </dl>
-
-            <div class="headline">
-              <p class="label">Headline result</p>
-              <p class="headline__value">Measuring now.</p>
-              <p class="headline__text">Total cooling energy in watt-hours for the same workload at equal thermal safety, our controller against a well-tuned standard one. We publish the number when the rig measures it.</p>
-            </div>
-
-            <ol class="log">
-              <li class="is-done"><time>Sep 28, 2026</time><div><h3>Build started</h3><p>Eight-week plan: loop, sensors and logging, then head-to-head runs.</p></div><span class="state">Done</span></li>
-              <li class="is-done"><time>Oct 4</time><div><h3>Workload samples built</h3><p>Scanned 246,934,820 rows of Alibaba cluster data for realistic load patterns.</p></div><span class="state">Done</span></li>
-              <li class="is-done"><time>Oct 10</time><div><h3>First one-hour hardware run</h3><p>3,601 rows at 1 Hz with zero gaps, duplicates or sensor failures.</p></div><span class="state">Done</span></li>
-              <li class="is-done"><time>Oct 10</time><div><h3>Standard workload recorded</h3><p>2,700 seconds of real server load. It drives the heaters and the preview at the top of this page.</p></div><span class="state">Done</span></li>
-              <li class="is-now"><time>Oct 2026</time><div><h3>Cold plate water test</h3><p>Loop assembly, then a 24-hour unpowered leak test before any heat goes in.</p></div><span class="state">In progress</span></li>
-              <li><time>By Nov 22</time><div><h3>Head-to-head runs</h3><p>Our controller against a tuned baseline across humidity sweeps, load spikes and condensation-safety tests.</p></div><span class="state">Next</span></li>
-              <li><time>Nov 23 – Jan 10</time><div><h3>Four-rack CFD model</h3><p>Airflow simulation checked against rig data, to show the controller at hall scale.</p></div><span class="state">Planned</span></li>
-              <li><time>Jan 2027</time><div><h3>Conrad Innovation stage</h3><p>A fast surrogate model judges can try live, backed by the measured result.</p></div><span class="state">Planned</span></li>
-            </ol>
-          </div>
-        </div>
-      </section>
-
-      <!-- Team -->
-      <section class="sec" id="team">
-        <div class="frame sec__grid">
-          <p class="sec__label label">05 / Team</p>
-          <div class="sec__body">
-            <h2 class="title title--lg">Four jobs, one rack.</h2>
-            <ul class="team">
-              <li><p class="label">Build</p><h3>Akshay Sanjai</h3><p>Hardware, machining and the liquid loop.</p></li>
-              <li><p class="label">Code</p><h3>Controls and software</h3><p>Firmware, logging, the forecaster and the optimizer.</p></li>
-              <li><p class="label">Physics</p><h3>Thermal modeling</h3><p>Heat transfer, dew point math and simulation.</p></li>
-              <li><p class="label">Business</p><h3>Operations and market</h3><p>Operator interviews, budget and the competition plan.</p></li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- FAQ -->
-      <section class="sec" id="faq">
-        <div class="frame sec__grid">
-          <p class="sec__label label">06 / FAQ</p>
-          <div class="sec__body">
-            <h2 class="title title--lg">Questions judges ask.</h2>
-            <div class="faq">
-              <details>
-                <summary>Isn't this just a thermostat?</summary>
-                <p>A thermostat holds one temperature. Delta-T chooses between two cooling systems with different costs, under two limits that move: chip temperature and the dew point. The best answer changes with the load and the weather.</p>
-              </details>
-              <details>
-                <summary>Why not reinforcement learning?</summary>
-                <p>We don't need it, and it would be harder to trust. A fitted physical model plus a small search over fan and pump settings is fast, explainable, and easy to check against the safety limits.</p>
-              </details>
-              <details>
-                <summary>How much energy does it save?</summary>
-                <p>We don't know yet, and we won't guess. The number will be measured on the rig: total cooling energy for the same workload at equal safety, against a properly tuned standard controller.</p>
-              </details>
-              <details>
-                <summary>What if the controller fails?</summary>
-                <p>Thermal fuses and a leak sensor on a hardware relay cut power without asking the software. The controller is never the last line of defense.</p>
-              </details>
-              <details>
-                <summary>Who is it for?</summary>
-                <p>Operators of older air-cooled data centers who are adding liquid cooling for AI hardware and have to run both systems in the same room.</p>
-              </details>
+        <section class="block" id="faq">
+          <div class="frame">
+            <div class="block__top"><p class="label">Questions</p><p class="label">The ones judges ask</p></div>
+            <div class="qa">
+              <div><h3>Isn't this just a thermostat?</h3><p>A thermostat holds one temperature. Delta-T chooses between two cooling systems with different costs, under two limits that move: chip temperature and the dew point.</p></div>
+              <div><h3>How much energy does it save?</h3><p>We don't know yet, and we won't guess. It gets measured on the rig, for the same workload at equal safety, against a properly tuned standard controller.</p></div>
+              <div><h3>Why not reinforcement learning?</h3><p>It would be harder to trust. A fitted physical model and a small search over fan and pump settings is fast, explainable and easy to check against the limits.</p></div>
+              <div><h3>What if the controller fails?</h3><p>Thermal fuses and a leak sensor on a hardware relay cut power without asking the software. The controller is never the last line of defense.</p></div>
+              <div><h3>Who is it for?</h3><p>Operators of older air-cooled data centers adding liquid cooling for AI hardware, who have to run both systems in the same room.</p></div>
+              <div><h3>Where does the load come from?</h3><p>A 45-minute recording from our own server, replayed through the heaters watt for watt, so every test run does the same work.</p></div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
 
     <footer class="foot">
@@ -322,25 +264,27 @@
         <p class="foot__big">The difference is the temperature. <span>We're measuring it.</span></p>
         <div class="foot__grid">
           <div class="foot__mark" data-logo></div>
-          <nav class="foot__col" aria-label="Project">
-            <p class="label">Project</p>
+          <nav class="foot__col" aria-label="Site">
+            <p class="label">Site</p>
             <a href="#rig">The rig</a>
-            <a href="#calculator">Calculator</a>
-            <a href="#specs">Specs</a>
+            <a href="#calculator">Try it</a>
+            <a href="#parts">Parts</a>
+            <a href="#progress">Progress</a>
           </nav>
-          <nav class="foot__col" aria-label="Progress">
-            <p class="label">Progress</p>
-            <a href="#log">Build log</a>
-            <a href="#team">Team</a>
-            <a href="#faq">FAQ</a>
-          </nav>
+          <div class="foot__col" id="team">
+            <p class="label">Team</p>
+            <p>Akshay Sanjai, build</p>
+            <p>Controls and software</p>
+            <p>Thermal modeling</p>
+            <p>Operations and market</p>
+          </div>
           <div class="foot__col">
             <p class="label">Entry</p>
             <p>Conrad Challenge 2026–27</p>
             <p>High school STEM research and entrepreneurship team</p>
           </div>
         </div>
-        <div class="foot__base label">
+        <div class="foot__base">
           <span>© 2026 Delta-T</span>
           <a href="#top">Back to top ↑</a>
         </div>

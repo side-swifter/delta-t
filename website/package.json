@@ -7,7 +7,8 @@
     "trace": "node scripts/build-trace.mjs",
     "dev": "npm run trace && vite",
     "build": "npm run trace && tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "5.3.0",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@types/three": "0.186.0",
     "typescript": "5.9.3",
-    "vite": "8.3.4"
+    "vite": "8.3.4",
+    "wrangler": "4.151.0"
   }
 }

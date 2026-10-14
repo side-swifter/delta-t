@@ -1,6 +1,5 @@
 import '@fontsource-variable/archivo/wdth.css'
 import '@fontsource/ibm-plex-mono/400.css'
-import '@fontsource/ibm-plex-mono/500.css'
 import './styles/main.css'
 
 import gsap from 'gsap'
@@ -127,56 +126,72 @@ paint(s)
 rig?.setState({ fan: s.fan, liquid: s.liquid, load: s.cpu / 100 })
 if (!reduceMotion) requestAnimationFrame(tick)
 
-// ---------- Dew point calculator ----------
+// ---------- Dew point sentence ----------
 const dewRoot = $('[data-dew]')
 const tIn = $<HTMLInputElement>('#dew-temp')
 const rhIn = $<HTMLInputElement>('#dew-rh')
-const o = (k: string) => $(`[data-o="${k}"]`, dewRoot)
+const o = (k: string) => $(`[data-o="${k}"]`)
 const pos = (c: number) => `${clamp((c / 40) * 100, 0, 100)}%`
 
-function fillTrack(input: HTMLInputElement) {
-  const p = ((Number(input.value) - Number(input.min)) / (Number(input.max) - Number(input.min))) * 100
-  input.style.setProperty('--p', `${p}%`)
+function read(input: HTMLInputElement) {
+  const v = clamp(Number(input.value) || 0, Number(input.min), Number(input.max))
+  return v
+}
+function size(input: HTMLInputElement) {
+  input.style.width = `${Math.max(2, input.value.length) + 0.2}ch`
 }
 
 function updateDew() {
-  const t = Number(tIn.value)
-  const rh = Number(rhIn.value)
+  const t = read(tIn)
+  const rh = read(rhIn)
   const dew = dewPoint(t, rh)
   const floor = coolantFloor(t, rh)
   const liq = Math.round(liquidShare(floor) * 100)
-  o('t').textContent = `${fmt(t)} °C`
-  o('rh').textContent = `${rh} %`
   o('dew').textContent = `${fmt(dew)} °C`
   o('floor').textContent = `${fmt(floor)} °C`
-  o('liq').textContent = `${liq} %`
+  o('liq').textContent = `${liq}%`
   o('unsafe').style.width = pos(dew)
-  o('mdew').style.left = pos(dew)
   o('mfloor').style.left = pos(floor)
   o('mroom').style.left = pos(t)
-  o('note').innerHTML =
-    floor > 12.05
-      ? `Humid enough that condensation sets the limit. The coolant has to stay above <b>${fmt(floor)} °C</b>, so the fans carry about <b>${100 - liq}%</b> of the heat.`
-      : `Dry enough that the chiller's own floor of 12 °C binds first. The liquid loop can take about <b>${liq}%</b> of the heat.`
-  fillTrack(tIn)
-  fillTrack(rhIn)
+  size(tIn)
+  size(rhIn)
 }
-;[tIn, rhIn].forEach((el) =>
-  el.addEventListener('input', () => {
-    $$('.preset', dewRoot).forEach((c) => c.classList.remove('is-on'))
+;[tIn, rhIn].forEach((el) => {
+  el.addEventListener('input', updateDew)
+  el.addEventListener('change', () => {
+    el.value = String(read(el))
+    updateDew()
+  })
+})
+$$<HTMLButtonElement>('[data-step]', dewRoot).forEach((btn) =>
+  btn.addEventListener('click', () => {
+    const [k, d] = btn.dataset.step!.split(',')
+    const el = k === 't' ? tIn : rhIn
+    el.value = String(clamp(read(el) + Number(d), Number(el.min), Number(el.max)))
     updateDew()
   }),
 )
-$$<HTMLButtonElement>('[data-preset]', dewRoot).forEach((btn) =>
+$$<HTMLButtonElement>('[data-preset]').forEach((btn) =>
   btn.addEventListener('click', () => {
-    const [t, rh] = btn.dataset.preset!.split(',').map(Number)
-    tIn.value = String(t)
-    rhIn.value = String(rh)
-    $$('.preset', dewRoot).forEach((c) => c.classList.toggle('is-on', c === btn))
+    const [t, rh] = btn.dataset.preset!.split(',')
+    tIn.value = t
+    rhIn.value = rh
     updateDew()
   }),
 )
 updateDew()
+
+// ---------- Progress: week counter and today marker ----------
+{
+  const start = Date.UTC(2026, 8, 28)
+  const end = Date.UTC(2027, 0, 10)
+  const now = Date.now()
+  const week = clamp(Math.floor((now - start) / (7 * 864e5)) + 1, 1, 8)
+  $('[data-week]').textContent = String(week)
+  const p = clamp((now - start) / (end - start), 0, 1) * 100
+  $('[data-track-fill]').style.width = `${p}%`
+  $('[data-track-now]').style.left = `${p}%`
+}
 
 // ---------- Motion: one entrance for the hero, then the story copy fades as it passes ----------
 if (!reduceMotion) {
