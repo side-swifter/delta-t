@@ -1,6 +1,38 @@
 # Delta-T website plan
 
-Written before any code. This is the brief the site is built from.
+## v3 (Oct 14): engineering document, not a SaaS page
+
+Akshay's feedback on v2: the type and overall feel still read as AI-made. References: everpuredata.com and Trawelt's case studies on Land-book.
+
+- **Type.** Geist is the default font of AI-generated sites, so it is gone. Display is Archivo at a wide width (wdth 116) and medium weight, not bold. Body is Archivo at normal width. Labels, data and buttons are IBM Plex Mono in small caps-style uppercase.
+- **Surface.** Warm paper (#EEEDE9), black ink, 1px rules, square corners everywhere. No pills, rounded cards, soft shadows, gradients or glass panels.
+- **Structure.** Case-study layout: a 12-column grid with a section label in the left three columns (02 / Calculator, 03 / Specs …) and content on the right. Results shown as a stat row of big figures with captions, then the dated log.
+- **Rig.** The 3D rig and scroll chapters stay. The readout is a full-width instrument strip along the bottom of the stage. Part callouts are square markers with leader lines and boxed mono labels.
+- **Footer.** Dark, with one big statement line, the mark, and link columns.
+
+## v2 (Oct 14): why v1 felt AI-made, and what changes
+
+Akshay's verdict on v1: it looks AI-generated and doesn't feel like a real, usable site. What caused that:
+
+1. **One headline formula everywhere.** Every section was "Plain words. *Blue italic words.*" That repetition is the strongest AI tell.
+2. **Numbered mono eyebrows on every section** ("01 · The constraint"). Decoration pretending to be structure.
+3. **The stock dark-SaaS hero.** Faded grid, glowing card, black page. Thousands of generated sites open this way.
+4. **No product.** Cubo leads with its product. v1 had text, cards and a chart, but you never saw the rig.
+5. **The same fade-up on every block.** Motion that says nothing.
+
+What v2 does instead:
+
+- **The rig is the hero.** A real-time 3D model of the rack (Three.js): fan wall, two liquid-cooled nodes with cold plates, pump, reservoir, radiator, Peltier stage, the controller board, and air you can see heating up as it passes through. Fans spin at the controller's fan speed and coolant flows at its pump speed, driven by the real server trace.
+- **One scroll story, not ten sections.** The camera moves around the rig through four chapters: the rack, the fans, the liquid loop (beads of condensation appear when coolant falls below the dew point), and the controller choosing the split. Labels point at real parts.
+- **Light, clean, product-page look.** White and pale grey, black type, the logo's blue as the only accent. One sans family (Geist) at tight display tracking, Geist Mono for numbers. No serif italics in the copy; the logo keeps its own character.
+- **Usable sections.** A dew point calculator laid out like a tool, a tech-specs table like a product page, a dated build log with status, team, FAQ, and a footer with real navigation.
+- **Motion with a job.** The camera moves only to show the part being described. Everything else stays still.
+
+The v1 plan below is kept for reference. Its stack decisions still hold, plus Three.js.
+
+---
+
+# v1 plan (Oct 14, superseded above)
 
 ## 1. What the site has to do
 

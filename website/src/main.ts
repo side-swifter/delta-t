@@ -1,7 +1,6 @@
-import '@fontsource/instrument-serif/400.css'
-import '@fontsource/instrument-serif/400-italic.css'
-import '@fontsource-variable/geist'
-import '@fontsource-variable/geist-mono'
+import '@fontsource-variable/archivo/wdth.css'
+import '@fontsource/ibm-plex-mono/400.css'
+import '@fontsource/ibm-plex-mono/500.css'
 import './styles/main.css'
 
 import gsap from 'gsap'
@@ -10,7 +9,8 @@ import Lenis from 'lenis'
 
 import { logoMark } from './logo'
 import trace from './data/trace.json'
-import { RigSim, coolantFloor, dewPoint, fanPowerRatio, liquidShare, clamp, type RigState } from './physics'
+import { RigSim, coolantFloor, dewPoint, liquidShare, clamp, type RigState } from './physics'
+import { createRig } from './scene'
 
 gsap.registerPlugin(ScrollTrigger)
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -25,7 +25,7 @@ $$('[data-logo]').forEach((el) => (el.innerHTML = logoMark()))
 // ---------- Smooth scroll ----------
 let lenis: Lenis | null = null
 if (!reduceMotion) {
-  lenis = new Lenis({ lerp: 0.11 })
+  lenis = new Lenis({ lerp: 0.12 })
   lenis.on('scroll', ScrollTrigger.update)
   gsap.ticker.add((time) => lenis!.raf(time * 1000))
   gsap.ticker.lagSmoothing(0)
@@ -33,11 +33,11 @@ if (!reduceMotion) {
 $$<HTMLAnchorElement>('a[href^="#"]').forEach((a) =>
   a.addEventListener('click', (e) => {
     const id = a.getAttribute('href')!
-    const target = id === '#top' ? document.body : document.querySelector(id)
+    const target = id === '#top' ? document.body : document.querySelector<HTMLElement>(id)
     if (!target) return
     e.preventDefault()
     closeMenu()
-    if (lenis) lenis.scrollTo(target as HTMLElement, { offset: id === '#top' ? 0 : -64 })
+    if (lenis) lenis.scrollTo(target, { offset: id === '#top' ? 0 : -56 })
     else target.scrollIntoView()
   }),
 )
@@ -55,67 +55,79 @@ toggle.addEventListener('click', () => {
   toggle.setAttribute('aria-expanded', String(open))
   menu.hidden = !open
 })
-const onScroll = () => nav.classList.toggle('is-solid', window.scrollY > 24)
+const onScroll = () => nav.classList.toggle('is-solid', window.scrollY > 8)
 window.addEventListener('scroll', onScroll, { passive: true })
 onScroll()
 
-// ---------- Hero: live rig model driven by the real server trace ----------
+// ---------- The rig: 3D model + readouts, both driven by the recorded server trace ----------
+const story = $('[data-story]')
+const rig = createRig($<HTMLCanvasElement>('[data-canvas]'), $('[data-tags]'))
+if (!rig) {
+  $('[data-fallback]').hidden = false
+  $('[data-canvas]').hidden = true
+}
+
+const CHAPTERS = ['Overview', 'Heat', 'Air', 'Liquid', 'Control']
+const chNum = $('[data-ch-num]')
+const chName = $('[data-ch-name]')
+let chapter = 0
+ScrollTrigger.create({
+  trigger: story,
+  start: 'top top',
+  end: 'bottom bottom',
+  onUpdate: (self) => {
+    chapter = self.progress * (CHAPTERS.length - 1)
+    rig?.setChapter(chapter)
+    const active = Math.round(chapter)
+    chNum.textContent = String(active).padStart(2, '0')
+    chName.textContent = CHAPTERS[active]
+  },
+})
+
+new IntersectionObserver(([entry]) => rig?.setActive(entry.isIntersecting)).observe(story)
+
 const r = (k: string) => $(`[data-r="${k}"]`)
 const sim = new RigSim(trace.cpu)
 const SPEED = 20 // trace seconds per real second
-const WINDOW = 180 // trace seconds shown on the chart
-const history: RigState[] = []
 let simT = 0
-let lastNow = performance.now()
+let last = performance.now()
 let lastPaint = 0
+let s: RigState = sim.step(0, 1)
+for (let t = 1; t < 120; t++) s = sim.step(t, 1)
+simT = 120
 
-function toPoints(key: 'chipC' | 'coolantC' | 'dewC', lo: number, hi: number): string {
-  const t0 = simT - WINDOW
-  return history
-    .map((s) => `${(((s.t - t0) / WINDOW) * 360).toFixed(1)},${(140 - ((s[key] - lo) / (hi - lo)) * 140).toFixed(1)}`)
-    .join(' ')
-}
-
-function paint(s: RigState) {
-  const mm = Math.floor(s.t / 60) % 45
-  const ss = Math.floor(s.t % 60)
-  r('clock').textContent = `t = ${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`
-  const liq = Math.round(s.liquid * 100)
+function paint(st: RigState) {
+  const mm = Math.floor(st.t / 60) % 45
+  const ss = Math.floor(st.t % 60)
+  r('clock').textContent = `${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`
+  const liq = Math.round(st.liquid * 100)
   r('liq').textContent = String(liq)
   r('air').textContent = String(100 - liq)
   r('liqbar').style.flexBasis = `${liq}%`
   r('airbar').style.flexBasis = `${100 - liq}%`
-  r('chip').textContent = fmt(s.chipC)
-  r('cool').textContent = fmt(s.coolantC)
-  r('dew').textContent = fmt(s.dewC)
-  r('rh').textContent = fmt(s.rh, 0)
-  r('cpu').textContent = fmt(s.cpu, 0)
-  r('pw').textContent = fmt(s.coolingW)
-  r('pchip').setAttribute('points', toPoints('chipC', 0, 75))
-  r('pcool').setAttribute('points', toPoints('coolantC', 0, 75))
-  r('pdew').setAttribute('points', toPoints('dewC', 0, 75))
+  r('chip').textContent = fmt(st.chipC)
+  r('cool').textContent = fmt(st.coolantC)
+  r('dew').textContent = fmt(st.dewC)
+  r('cpu').textContent = fmt(st.cpu, 0)
 }
 
-// Warm up so the chart starts full.
-for (let t = 0; t < WINDOW; t += 1) history.push(sim.step(t, 1))
-simT = WINDOW
-
 function tick(now: number) {
-  const dt = Math.min(0.1, (now - lastNow) / 1000) * SPEED
-  lastNow = now
+  const dt = Math.min(0.1, (now - last) / 1000) * SPEED
+  last = now
   simT += dt
-  history.push(sim.step(simT, dt))
-  while (history.length && history[0].t < simT - WINDOW) history.shift()
-  if (now - lastPaint > 80) {
-    paint(history[history.length - 1])
+  s = sim.step(simT, dt)
+  rig?.setState({ fan: s.fan, liquid: s.liquid, load: s.cpu / 100 })
+  if (now - lastPaint > 120) {
+    paint(s)
     lastPaint = now
   }
   requestAnimationFrame(tick)
 }
-paint(history[history.length - 1])
+paint(s)
+rig?.setState({ fan: s.fan, liquid: s.liquid, load: s.cpu / 100 })
 if (!reduceMotion) requestAnimationFrame(tick)
 
-// ---------- Dew point explorer ----------
+// ---------- Dew point calculator ----------
 const dewRoot = $('[data-dew]')
 const tIn = $<HTMLInputElement>('#dew-temp')
 const rhIn = $<HTMLInputElement>('#dew-rh')
@@ -132,26 +144,26 @@ function updateDew() {
   const rh = Number(rhIn.value)
   const dew = dewPoint(t, rh)
   const floor = coolantFloor(t, rh)
-  const liq = liquidShare(floor)
+  const liq = Math.round(liquidShare(floor) * 100)
   o('t').textContent = `${fmt(t)} °C`
   o('rh').textContent = `${rh} %`
-  o('dew').textContent = `${fmt(dew)}°`
-  o('floor').textContent = `${fmt(floor)}°`
-  o('liq').textContent = `${Math.round(liq * 100)}%`
+  o('dew').textContent = `${fmt(dew)} °C`
+  o('floor').textContent = `${fmt(floor)} °C`
+  o('liq').textContent = `${liq} %`
   o('unsafe').style.width = pos(dew)
   o('mdew').style.left = pos(dew)
   o('mfloor').style.left = pos(floor)
   o('mroom').style.left = pos(t)
   o('note').innerHTML =
     floor > 12.05
-      ? `At ${rh}% humidity the coolant can't go below <b>${fmt(floor)} °C</b> without risking condensation, so the fans have to carry about <b>${100 - Math.round(liq * 100)}%</b> of the heat.`
-      : `The air is dry enough that the chiller's own limit (12 °C) binds first. The liquid loop can take about <b>${Math.round(liq * 100)}%</b> of the heat.`
+      ? `Humid enough that condensation sets the limit. The coolant has to stay above <b>${fmt(floor)} °C</b>, so the fans carry about <b>${100 - liq}%</b> of the heat.`
+      : `Dry enough that the chiller's own floor of 12 °C binds first. The liquid loop can take about <b>${liq}%</b> of the heat.`
   fillTrack(tIn)
   fillTrack(rhIn)
 }
 ;[tIn, rhIn].forEach((el) =>
   el.addEventListener('input', () => {
-    $$('.chip', dewRoot).forEach((c) => c.classList.remove('is-on'))
+    $$('.preset', dewRoot).forEach((c) => c.classList.remove('is-on'))
     updateDew()
   }),
 )
@@ -160,70 +172,21 @@ $$<HTMLButtonElement>('[data-preset]', dewRoot).forEach((btn) =>
     const [t, rh] = btn.dataset.preset!.split(',').map(Number)
     tIn.value = String(t)
     rhIn.value = String(rh)
-    $$('.chip', dewRoot).forEach((c) => c.classList.toggle('is-on', c === btn))
+    $$('.preset', dewRoot).forEach((c) => c.classList.toggle('is-on', c === btn))
     updateDew()
   }),
 )
 updateDew()
 
-// ---------- Fan cube law ----------
-const fanRoot = $('[data-fan]')
-const fanIn = $<HTMLInputElement>('#fan-speed')
-const f = (k: string) => $(`[data-f="${k}"]`, fanRoot)
-const X0 = 30, X1 = 310, Y0 = 170, Y1 = 10
-const fx = (s: number) => X0 + s * (X1 - X0)
-const fy = (p: number) => Y0 - p * (Y0 - Y1)
-f('curve').setAttribute(
-  'd',
-  Array.from({ length: 61 }, (_, i) => i / 60)
-    .map((s, i) => `${i ? 'L' : 'M'}${fx(s).toFixed(1)},${fy(fanPowerRatio(s)).toFixed(1)}`)
-    .join(' '),
-)
-function updateFan() {
-  const s = Number(fanIn.value) / 100
-  const p = fanPowerRatio(s)
-  const x = fx(s), y = fy(p)
-  f('dot').setAttribute('cx', String(x))
-  f('dot').setAttribute('cy', String(y))
-  Object.entries({ x1: x, y1: Y0, x2: x, y2: y }).forEach(([k, v]) => f('gx').setAttribute(k, String(v)))
-  Object.entries({ x1: X0, y1: y, x2: x, y2: y }).forEach(([k, v]) => f('gy').setAttribute(k, String(v)))
-  f('speed').textContent = `${fanIn.value} %`
-  const saving = Math.round((1 - p) * 100)
-  f('saving').textContent = saving > 0 ? `−${saving}%` : '0%'
-  fillTrack(fanIn)
-}
-fanIn.addEventListener('input', updateFan)
-updateFan()
-
-// ---------- Motion ----------
+// ---------- Motion: one entrance for the hero, then the story copy fades as it passes ----------
 if (!reduceMotion) {
-  // One orchestrated load moment: headline lines rise, then copy and panel follow.
-  const intro = gsap.timeline({ defaults: { ease: 'expo.out' } })
-  intro
-    .from('[data-line]', { yPercent: 110, duration: 1.3, stagger: 0.12 })
-    .from('.hero [data-rise]', { y: 24, opacity: 0, duration: 1, stagger: 0.08, clearProps: 'transform' }, '-=0.95')
-    .from('[data-panel]', { y: 40, opacity: 0, duration: 1.2 }, '-=0.9')
-    .from('.nav__inner > *', { opacity: 0, y: -8, duration: 0.8, stagger: 0.05, clearProps: 'transform' }, '-=1')
-
-  $$('[data-reveal]').forEach((el) => {
-    gsap.from(el, {
-      y: 36,
-      opacity: 0,
-      duration: 1.1,
-      ease: 'expo.out',
-      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-    })
-  })
-
-  $$('[data-count]').forEach((el) => {
-    const end = Number(el.dataset.count)
-    const obj = { v: 0 }
-    gsap.to(obj, {
-      v: end,
-      duration: 1.8,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-      onUpdate: () => (el.textContent = Math.round(obj.v).toLocaleString('en-US')),
+  gsap.from('.step--hero .step__copy > *', { y: 18, opacity: 0, duration: 1, ease: 'power3.out', stagger: 0.07, delay: 0.1 })
+  gsap.from('.readout', { opacity: 0, duration: 1, delay: 0.5 })
+  $$('.step:not(.step--hero) .step__copy').forEach((el) => {
+    gsap.fromTo(el, { opacity: 0.15 }, {
+      opacity: 1,
+      ease: 'none',
+      scrollTrigger: { trigger: el, start: 'top 85%', end: 'top 55%', scrub: true },
     })
   })
 }

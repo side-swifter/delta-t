@@ -26,7 +26,7 @@ Node 20 or newer. `npm run dev` and `npm run build` first regenerate `src/data/t
 
 ## Stack
 
-Vite 8, TypeScript, GSAP with ScrollTrigger, Lenis smooth scrolling, self-hosted fonts from Fontsource (Instrument Serif, Geist, Geist Mono). No framework.
+Vite 8, TypeScript, GSAP with ScrollTrigger, Lenis smooth scrolling, Three.js for the 3D rig, self-hosted fonts from Fontsource (Archivo, IBM Plex Mono). No framework.
 
 ## Still to fill in
 

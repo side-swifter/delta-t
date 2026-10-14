@@ -1,4 +1,7 @@
 import { defineConfig } from 'vite'
 
-// Relative base so the build works from any static host or subpath.
-export default defineConfig({ base: './' })
+export default defineConfig({
+  base: './',
+  // three.js is most of the bundle; one chunk is fine for a single page.
+  build: { chunkSizeWarningLimit: 900 },
+})
